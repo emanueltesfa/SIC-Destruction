@@ -31,7 +31,7 @@ namespace SIC_Simulator
             this.lvAuthors.Items.Clear();
 
 
-            String[] ScottPLvItems = { "Scott Piersall", "Chief Architect & Lead Developer VM" };
+            String[] ScottPLvItems = { "Scott Piersall", "Chief Architect & Lead Developer VM & Doom Slayer"};
             this.lvAuthors.Items.Add(new ListViewItem(ScottPLvItems ));
 
 

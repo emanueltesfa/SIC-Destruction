@@ -7,7 +7,6 @@ using System.Runtime.Serialization.Formatters.Soap;
 using SIC_Simulator.Extensions;
 using static System.Windows.Forms.ListViewItem;
 using System.Diagnostics;
-using System.Runtime.Serialization;
 
 namespace SIC_Simulator
 {
@@ -95,15 +94,7 @@ namespace SIC_Simulator
                 using (var stream = File.Open(sfd.FileName, FileMode.Create))
                 {
                     SoapFormatter sf = new SoapFormatter();
-                    try
-                    {
-                        sf.Serialize(stream, this.SICVirtualMachine);
-                        stream.Close();
-                    }
-                    catch (SerializationException d)
-                    {
-                        MessageBox.Show("Failed to serialize.\n Reason: " + d.Message);
-                    }
+                    sf.Serialize(stream, this.SICVirtualMachine);
                 }
             }
 
@@ -304,8 +295,7 @@ namespace SIC_Simulator
                 using (var stream = File.Open(ofd.FileName, FileMode.Open))
                 {
                     SoapFormatter osf = new SoapFormatter();
-                    this.SICVirtualMachine = (SIC_CPU) osf.Deserialize(stream);
-                    stream.Close();
+                    this.SICVirtualMachine = (SIC_CPU) osf.Deserialize(stream); 
                 }
                 // Refresh Memory and Register Displays to Show Saved State
                 this.RefreshCPUDisplays();
@@ -461,6 +451,7 @@ namespace SIC_Simulator
             if (loadSICSourceFD.ShowDialog() == DialogResult.OK)
             {
                 Assembler assembler = new Assembler(loadSICSourceFD.FileName);
+                this.SICVirtualMachine.getSICSource(assembler);
 
                 if ( !String.IsNullOrEmpty(assembler.ObjectCode) )
                 {
