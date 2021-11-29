@@ -1,0 +1,16 @@
+C:\Users\Sam\Documents\GitHub\SIC-Destruction\bin\Debug\SIC Simulator.exe.config
+C:\Users\Sam\Documents\GitHub\SIC-Destruction\bin\Debug\SIC Simulator.exe
+C:\Users\Sam\Documents\GitHub\SIC-Destruction\bin\Debug\SIC Simulator.pdb
+C:\Users\Sam\Documents\GitHub\SIC-Destruction\obj\Debug\SIC Simulator.csproj.AssemblyReference.cache
+C:\Users\Sam\Documents\GitHub\SIC-Destruction\obj\Debug\SIC_Simulator.dlgRelocateObjectFile.resources
+C:\Users\Sam\Documents\GitHub\SIC-Destruction\obj\Debug\SIC_Simulator.dlgSetMemoryByte.resources
+C:\Users\Sam\Documents\GitHub\SIC-Destruction\obj\Debug\SIC_Simulator.dlgSetMemoryWord.resources
+C:\Users\Sam\Documents\GitHub\SIC-Destruction\obj\Debug\SIC_Simulator.dlgSetRegisterWord.resources
+C:\Users\Sam\Documents\GitHub\SIC-Destruction\obj\Debug\SIC_Simulator.dlgStopAtMemoryAddress.resources
+C:\Users\Sam\Documents\GitHub\SIC-Destruction\obj\Debug\SIC_Simulator.Form1.resources
+C:\Users\Sam\Documents\GitHub\SIC-Destruction\obj\Debug\SIC_Simulator.frmAbout.resources
+C:\Users\Sam\Documents\GitHub\SIC-Destruction\obj\Debug\SIC_Simulator.Properties.Resources.resources
+C:\Users\Sam\Documents\GitHub\SIC-Destruction\obj\Debug\SIC Simulator.csproj.GenerateResource.cache
+C:\Users\Sam\Documents\GitHub\SIC-Destruction\obj\Debug\SIC Simulator.csproj.CoreCompileInputs.cache
+C:\Users\Sam\Documents\GitHub\SIC-Destruction\obj\Debug\SIC Simulator.exe
+C:\Users\Sam\Documents\GitHub\SIC-Destruction\obj\Debug\SIC Simulator.pdb

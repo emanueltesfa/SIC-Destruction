@@ -122,8 +122,9 @@ namespace SIC_Simulator
             int num2 = 0;
             for (int i = 0; i < 3; ++i)
             {
-                if(Address > this.MemoryBytes.Length){
-                    break;
+                int val = this.MemoryBytes.Length;
+                if(this.MemoryBytes[Address] > 32768){
+                    return num1;
                 }else{
                     char ch = (char)this.MemoryBytes[Address++];
                     num2 = (int)ch;
