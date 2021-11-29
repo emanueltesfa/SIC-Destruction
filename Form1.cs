@@ -451,6 +451,7 @@ namespace SIC_Simulator
             if (loadSICSourceFD.ShowDialog() == DialogResult.OK)
             {
                 Assembler assembler = new Assembler(loadSICSourceFD.FileName);
+                this.SICVirtualMachine.getSICSource(assembler);
 
                 if ( !String.IsNullOrEmpty(assembler.ObjectCode) )
                 {

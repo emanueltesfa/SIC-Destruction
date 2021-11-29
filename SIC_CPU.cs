@@ -1,5 +1,6 @@
 using System;
 using System.Text;
+using System.Collections.Generic;
 
 namespace SIC_Simulator
 {
@@ -16,6 +17,7 @@ namespace SIC_Simulator
         public int X = 0;
         public int L = 0;
         public int SW = 0;
+        public Assembler assembler = null;
 
         public byte[] MemoryBytes;
 
@@ -29,6 +31,11 @@ namespace SIC_Simulator
         public String MicrocodeSteps
         {
             get { return this.MicroSteps.ToString(); }
+        }
+
+        // need to review assembly source to discern between BYTE and WORD directives
+        public void getSICSource(Assembler assembler) {
+          this.assembler = assembler;
         }
 
 
@@ -879,9 +886,27 @@ namespace SIC_Simulator
                     int DeviceNumberToRead;
                     DeviceNumberToRead = this.FetchWord(TA);
 
-                    // in case device ID is stored using a BYTE constant
+                    // in case device ID is stored using a BYTE constant that is greater than zero
                     if((DeviceNumberToRead >> 16) > 0)
                       DeviceNumberToRead >>= 16;
+
+                    // in case device ID is stored using a BYTE constant that is equal to zero
+                    else if((DeviceNumberToRead >> 16) == 0) {
+                      List<Instruction> InstructionList = assembler.InstructionList;
+                      for(int i=0; i<InstructionList.Count; i++) {
+                        Instruction instruction = InstructionList[i];
+                        if(TA == instruction.MemoryAddress) {
+                          if(instruction.OpCode.Equals("BYTE") || instruction.OpCode.Equals("WORD")) {
+                            if(instruction.OpCode.Equals("BYTE")) {
+                              DeviceNumberToRead >>= 16;
+                              break;
+                            }
+                          }
+                          else
+                            continue;
+                        }
+                      }
+                    }
 
                     // Set Device's Status Word to BUSY
                     this.Devices[DeviceNumberToRead].DeviceSW &= 0xFFFF3F;
@@ -1005,9 +1030,27 @@ namespace SIC_Simulator
                     int DeviceNumberToWriteTo;
                     DeviceNumberToWriteTo = this.FetchWord(TA);
 
-                    // in case device id was stored using a byte constant
+                    // in case device id was stored using a byte constant greater than zero
                     if((DeviceNumberToWriteTo >> 16) > 0)
                       DeviceNumberToWriteTo >>= 16;
+
+                    // in case device id was stored using a byte constant equal to zero
+                    else if((DeviceNumberToWriteTo >> 16) == 0) {
+                      List<Instruction> InstructionList = assembler.InstructionList;
+                      for(int i=0; i<InstructionList.Count; i++) {
+                        Instruction instruction = InstructionList[i];
+                        if(TA == instruction.MemoryAddress) {
+                          if(instruction.OpCode.Equals("BYTE") || instruction.OpCode.Equals("WORD")) {
+                            if(instruction.OpCode.Equals("BYTE")) {
+                                DeviceNumberToWriteTo >>= 16;
+                                break;
+                            }
+                          }
+                          else
+                            continue;
+                        }
+                      }
+                    }
 
                     // Set Device's Status Word to BUSY
                     this.Devices[DeviceNumberToWriteTo].DeviceSW &= 0xFFFF3F;
