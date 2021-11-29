@@ -1011,7 +1011,6 @@ namespace SIC_Simulator
                     DeviceDetector(TA);
 
                     // Set Device's Status Word to BUSY
-                    MessageBox.Show("" +this.Devices[DeviceNumberToWriteTo].DeviceSW);
                     this.Devices[DeviceNumberToWriteTo].DeviceSW &= 0xFFFF3F;
 
                     // Write the byte to the device
