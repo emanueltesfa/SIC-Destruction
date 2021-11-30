@@ -599,12 +599,19 @@ namespace SIC_Simulator
 
         private void btnThreeStep_Click(object sender, EventArgs e)
         {
-            this.SICVirtualMachine.PerformStep();
-            this.RefreshCPUDisplays();
-            this.SICVirtualMachine.PerformStep();
-            this.RefreshCPUDisplays();
-            this.SICVirtualMachine.PerformStep();
-            this.RefreshCPUDisplays();
+            int i = 0;
+            
+            while( this.SICVirtualMachine.PC >=0 && this.SICVirtualMachine.PC <=32767 && i<3 ) {
+              this.SICVirtualMachine.PerformStep();
+              this.RefreshCPUDisplays();
+              i++;
+            }
+            //this.SICVirtualMachine.PerformStep();
+            //this.RefreshCPUDisplays();
+            //this.SICVirtualMachine.PerformStep();
+            //this.RefreshCPUDisplays();
+            //this.SICVirtualMachine.PerformStep();
+            //this.RefreshCPUDisplays();
         }
 
         private void loadObjectFileToolStripMenuItem_Click(object sender, EventArgs e)
