@@ -881,8 +881,6 @@ namespace SIC_Simulator
                     int DeviceNumberToRead;
                     DeviceNumberToRead = this.FetchWord(TA);
 
-                    DeviceDetector(TA);
-
                     // Set Device's Status Word to BUSY
                     this.Devices[DeviceNumberToRead].DeviceSW &= 0xFFFF3F;
 
@@ -963,9 +961,6 @@ namespace SIC_Simulator
                     break;
 
                 case 0xE0: //   TD          (Tests to see if a device is busy).
-                   
-                    DeviceDetector(TA);
-
                     this.MicroSteps.AppendLine("-----TD------");
                     this.SW = this.SW | 0x40;
                     this.SW = this.SW & 0xFFFF7F; //CC is <
@@ -1007,8 +1002,6 @@ namespace SIC_Simulator
                     dataByteW = (byte)this.A;
                     int DeviceNumberToWriteTo;
                     DeviceNumberToWriteTo = this.FetchWord(TA);
-
-                    DeviceDetector(TA);
 
                     // Set Device's Status Word to BUSY
                     this.Devices[DeviceNumberToWriteTo].DeviceSW &= 0xFFFF3F;
@@ -1076,26 +1069,10 @@ namespace SIC_Simulator
 
 
         /// <summary>
-        /// Checks Whether Device in Target Adress Is Within Range During A Step
-        /// </summary>
-        /// <param name="TA">Target Address od Device</param>
-        public void DeviceDetector(int TA)
-        {
-            int DeviceNumber;
-            DeviceNumber = this.FetchWord(TA);
-
-            if(DeviceNumber > NumDevices - 1 || DeviceNumber < 0)
-            {
-                MessageBox.Show("Device " + DeviceNumber + " Does Not Exist");
-                return;
-            }
-        }
-
-        /// <summary>
         /// Set Alternate Values For A Serialized Object
         /// Stores And Formats In XML 
         /// </summary>
-        /// <param name="context">Opcode for Instruction to Execute</param>
+        /// <param name="info"> SerilizationInfo object used to customize serilization behavior</param>
         public void GetObjectData(SerializationInfo info, StreamingContext context)
         {
             
@@ -1108,6 +1085,11 @@ namespace SIC_Simulator
             info.AddValue("MicroSteps", MicroSteps);
         }
 
+        /// <summary>
+        /// Constructor that is called during deserialization
+        /// Reconstructs object from SerializationInfo info
+        /// </summary>
+        /// <param name="info">SerilizationInfo object used to customize serilization behavior</param>
         public SIC_CPU(SerializationInfo info, StreamingContext context)
         {
             PC = (int)info.GetValue("PC_Register", typeof(int));
