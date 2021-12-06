@@ -1116,7 +1116,38 @@ namespace SIC_Simulator
             }
         }
 
+        /// <summary>
+        /// Set Alternate Values For A Serialized Object
+        /// Stores And Formats In XML 
+        /// </summary>
+        /// <param name="info"> SerilizationInfo object used to customize serilization behavior</param>
+        public void GetObjectData(SerializationInfo info, StreamingContext context)
+        {
+            
+            info.AddValue("PC_Register",PC);
+            info.AddValue("A_Register",A);
+            info.AddValue("X_Register", X);
+            info.AddValue("L_Register", L);
+            info.AddValue("SW_Register", SW);
+            info.AddValue("MemoryBytes", MemoryBytes);
+            info.AddValue("MicroSteps", MicroSteps);
+        }
 
+        /// <summary>
+        /// Constructor that is called during deserialization
+        /// Reconstructs object from SerializationInfo info
+        /// </summary>
+        /// <param name="info">SerilizationInfo object used to customize serilization behavior</param>
+        public SIC_CPU(SerializationInfo info, StreamingContext context)
+        {
+            PC = (int)info.GetValue("PC_Register", typeof(int));
+            A = (int)info.GetValue("A_Register", typeof(int));
+            X = (int)info.GetValue("X_Register", typeof(int));
+            L = (int)info.GetValue("L_Register", typeof(int));
+            SW = (int)info.GetValue("SW_Register", typeof(int));
+            MemoryBytes = (byte[])info.GetValue("MemoryBytes", typeof(byte[]));
+            MicroSteps = (StringBuilder)info.GetValue("MicroSteps", typeof(StringBuilder));
+        }
 
     }
 
