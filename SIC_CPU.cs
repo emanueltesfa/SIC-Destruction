@@ -6,7 +6,7 @@ namespace SIC_Simulator
 {
 
     [Serializable()]
-    class SIC_CPU
+    class SIC_CPU : ISerializable
 
     {
         public readonly static int NumDevices = 65;
