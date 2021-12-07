@@ -98,7 +98,7 @@ namespace SIC_Simulator
     {
         
         private static readonly char[] InvalidSymbolCharacters = { ' ', '$', '!', '=', '+', '-', '(', ')', '@' };
-        private string DeviceAddress;
+        HashSet<string> DeviceName = new HashSet<string>(); // new
         public static bool IsInstrcution(string who) => Assembler.Instructions.ContainsKey(who);
         public static bool IsDirective(string who) => Assembler.Directives.Contains(who);
         public static bool IsNotSymbol(string who)
@@ -307,7 +307,8 @@ namespace SIC_Simulator
                         
                         if (instruction_line.OpCode.Equals("WD") || instruction_line.OpCode.Equals("TD") || instruction_line.OpCode.Equals("RD") )
                         {
-                            DeviceAddress = instruction_line.Operand;
+                            DeviceName.Add(instruction_line.Operand);
+
                         }
                     }
                     else if (instruction_line.OpCode.Equals("WORD"))
@@ -450,8 +451,11 @@ namespace SIC_Simulator
                         setSkippedAddress(row);
                         int val = Int32.Parse(row.Operand) & 0xFFFFFF;
                         SICSource += String.Format("{0,6:X6}", val);
-                        if(row.Symbol.Contains(DeviceAddress))
-                            DeviceDetector(val,row);
+                        
+                        foreach(var x in DeviceName){
+                            if(row.Symbol.Contains(x))
+                                DeviceDetector(val,row);
+                        }
                     }
                     else if (row.OpCode.Equals("BYTE"))
                     {
@@ -476,8 +480,10 @@ namespace SIC_Simulator
                         { // hex
                             String[] tmp = row.Operand.Split('\'');
                             SICSource += String.Format("{0}", tmp[1]);
-                            if(row.Symbol.Contains(DeviceAddress))
-                               DeviceDetector(Convert.ToInt32(tmp[1], 16),row);
+                            foreach(var x in DeviceName){
+                                if(row.Symbol.Contains(x))
+                                   DeviceDetector(Convert.ToInt32(tmp[1], 16),row);
+                            }
                         }
                     }
                     else if (row.OpCode.Equals("RESB") || row.OpCode.Equals("RESW"))
