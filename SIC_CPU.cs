@@ -893,21 +893,21 @@ namespace SIC_Simulator
                        most significant bits will be all zeros, i.e. the DEVICE_ID_PADDING = 16. Because pass 2 validates 
                        that a device ID complies with the specified bounds (0-64), the eight most significant bits will 
                        only have nonzero values when the device ID is stored using the BYTE directive*/
-                    if((DeviceNumberToRead >> 16) > 0)
-                      DeviceNumberToRead >>= 16;
+                    if((DeviceNumberToRead >> DEVICE_ID_PADDING) > 0)
+                      DeviceNumberToRead >>= DEVICE_ID_PADDING;
 
                     /* In case device ID is stored using a BYTE constant that is equal to zero. We need this additional check
                        because we can only safely ignore the 16 least significant bits of a device ID when the 8 most significant
                        bits are a nonzero value. Since we cannot make any assumptions about how the device ID is stored in this case,
                        we explicitly check the program source to determine if the device ID was stored using BYTE or WORD */
-                    else if((DeviceNumberToRead >> 16) == 0) {
+                    else if((DeviceNumberToRead >> DEVICE_ID_PADDING) == 0) {
                       List<Instruction> InstructionList = assembler.InstructionList;
                       for(int i=0; i<InstructionList.Count; i++) {
                         Instruction instruction = InstructionList[i];
                         if(TA == instruction.MemoryAddress) {
                           if(instruction.OpCode.Equals("BYTE") || instruction.OpCode.Equals("WORD")) {
                             if(instruction.OpCode.Equals("BYTE")) {
-                              DeviceNumberToRead >>= 16;
+                              DeviceNumberToRead >>= DEVICE_ID_PADDING;
                             }
                             break;
                           }
@@ -1044,21 +1044,21 @@ namespace SIC_Simulator
                      most significant bits will be all zeros, i.e. the DEVICE_ID_PADDING = 16. Because pass 2 validates 
                      that a device ID complies with the specified bounds (0-64), the eight most significant bits will 
                      only have nonzero values when the device ID is stored using the BYTE directive*/
-                    if((DeviceNumberToWriteTo >> 16) > 0)
-                      DeviceNumberToWriteTo >>= 16;
+                    if((DeviceNumberToWriteTo >> DEVICE_ID_PADDING) > 0)
+                      DeviceNumberToWriteTo >>= DEVICE_ID_PADDING;
 
                   /* In case device ID is stored using a BYTE constant that is equal to zero. We need this additional check
                      because we can only safely ignore the 16 least significant bits of a device ID when the 8 most significant
                      bits are a nonzero value. Since we cannot make any assumptions about how the device ID is stored in this case,
                      we explicitly check the program source to determine if the device ID was stored using BYTE or WORD */
-                    else if((DeviceNumberToWriteTo >> 16) == 0) {
+                    else if((DeviceNumberToWriteTo >> DEVICE_ID_PADDING) == 0) {
                       List<Instruction> InstructionList = assembler.InstructionList;
                       for(int i=0; i<InstructionList.Count; i++) {
                         Instruction instruction = InstructionList[i];
                         if(TA == instruction.MemoryAddress) {
                           if(instruction.OpCode.Equals("BYTE") || instruction.OpCode.Equals("WORD")) {
                             if(instruction.OpCode.Equals("BYTE")) {
-                                DeviceNumberToWriteTo >>= 16;
+                                DeviceNumberToWriteTo >>= DEVICE_ID_PADDING;
                             }
                             break;
                           }
