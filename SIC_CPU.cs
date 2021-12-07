@@ -11,6 +11,7 @@ namespace SIC_Simulator
 
     {
         public readonly static int NumDevices = 65;
+        public readonly static int DEVICE_ID_PADDING = 16; 
         public int CurrentProgramEndAddress = 0;
         public int CurrentProgramStartAddress = 0;
         public int PC = 0;
@@ -887,11 +888,18 @@ namespace SIC_Simulator
                     int DeviceNumberToRead;
                     DeviceNumberToRead = this.FetchWord(TA);
 
-                    // in case device ID is stored using a BYTE constant that is greater than zero
+                    /* We do this check in case a device ID is stored using a BYTE constant that is greater than zero.
+                       Valid IDs require at most a byte of storage. Thus, for an ID stored in a WORD, the 16 
+                       most significant bits will be all zeros, i.e. the DEVICE_ID_PADDING = 16. Because pass 2 validates 
+                       that a device ID complies with the specified bounds (0-64), the eight most significant bits will 
+                       only have nonzero values when the device ID is stored using the BYTE directive*/
                     if((DeviceNumberToRead >> 16) > 0)
                       DeviceNumberToRead >>= 16;
 
-                    // in case device ID is stored using a BYTE constant that is equal to zero
+                    /* In case device ID is stored using a BYTE constant that is equal to zero. We need this additional check
+                       because we can only safely ignore the 16 least significant bits of a device ID when the 8 most significant
+                       bits are a nonzero value. Since we cannot make any assumptions about how the device ID is stored in this case,
+                       we explicitly check the program source to determine if the device ID was stored using BYTE or WORD */
                     else if((DeviceNumberToRead >> 16) == 0) {
                       List<Instruction> InstructionList = assembler.InstructionList;
                       for(int i=0; i<InstructionList.Count; i++) {
@@ -900,8 +908,8 @@ namespace SIC_Simulator
                           if(instruction.OpCode.Equals("BYTE") || instruction.OpCode.Equals("WORD")) {
                             if(instruction.OpCode.Equals("BYTE")) {
                               DeviceNumberToRead >>= 16;
-                              break;
                             }
+                            break;
                           }
                           else
                             continue;
@@ -1031,11 +1039,18 @@ namespace SIC_Simulator
                     int DeviceNumberToWriteTo;
                     DeviceNumberToWriteTo = this.FetchWord(TA);
 
-                    // in case device id was stored using a byte constant greater than zero
+                  /* We do this check in case a device ID is stored using a BYTE constant that is greater than zero.
+                     Valid IDs require at most a byte of storage. Thus, for an ID stored in a WORD, the 16 
+                     most significant bits will be all zeros, i.e. the DEVICE_ID_PADDING = 16. Because pass 2 validates 
+                     that a device ID complies with the specified bounds (0-64), the eight most significant bits will 
+                     only have nonzero values when the device ID is stored using the BYTE directive*/
                     if((DeviceNumberToWriteTo >> 16) > 0)
                       DeviceNumberToWriteTo >>= 16;
 
-                    // in case device id was stored using a byte constant equal to zero
+                  /* In case device ID is stored using a BYTE constant that is equal to zero. We need this additional check
+                     because we can only safely ignore the 16 least significant bits of a device ID when the 8 most significant
+                     bits are a nonzero value. Since we cannot make any assumptions about how the device ID is stored in this case,
+                     we explicitly check the program source to determine if the device ID was stored using BYTE or WORD */
                     else if((DeviceNumberToWriteTo >> 16) == 0) {
                       List<Instruction> InstructionList = assembler.InstructionList;
                       for(int i=0; i<InstructionList.Count; i++) {
@@ -1044,8 +1059,8 @@ namespace SIC_Simulator
                           if(instruction.OpCode.Equals("BYTE") || instruction.OpCode.Equals("WORD")) {
                             if(instruction.OpCode.Equals("BYTE")) {
                                 DeviceNumberToWriteTo >>= 16;
-                                break;
                             }
+                            break;
                           }
                           else
                             continue;
