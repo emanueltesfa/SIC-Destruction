@@ -1132,6 +1132,10 @@ namespace SIC_Simulator
             info.AddValue("SW_Register", SW);
             info.AddValue("MemoryBytes", MemoryBytes);
             info.AddValue("MicroSteps", MicroSteps);
+            for(int i = 0; i < NumDevices; i++)
+            {    
+                info.AddValue("DeviceString" + i,Devices[i].GetWriteBufferASCIIByteString);
+            }
         }
 
         /// <summary>
